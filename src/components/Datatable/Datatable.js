@@ -86,7 +86,7 @@ const styles = {
     borderRadius: 10,
     backgroundColor: theme.palette.text.primary,
     color: theme.palette.background.default,
-    border: "none",
+    border: `4px solid ${theme.palette.secondary.dark}`,
     fontSize: "1.5rem",
     fontFamily: "inherit",
   },

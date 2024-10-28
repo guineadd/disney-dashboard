@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect, useRef } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { setCharacters, setSelected, setPagination, setFilter } from "../../redux/characterSlice";
@@ -9,6 +10,7 @@ import Chart from "../Chart/Chart.jsx";
 const Datatable = () => {
   const dispatch = useDispatch();
   const { data, pagination, filter, selected } = useSelector(state => state.characters);
+  const [sortModel, setSortModel] = useState([{ field: "name", sort: "asc" }]);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const characterSearchRef = useRef(null);
@@ -116,7 +118,12 @@ const Datatable = () => {
   });
 
   const currentPageData = filteredData
-    .sort((a, b) => (filter.sortBy === "name" ? a.name.localeCompare(b.name) : 0))
+    .sort((a, b) => {
+      const sortField = sortModel[0]?.field || "name";
+      const sortOrder = sortModel[0]?.sort === "desc" ? -1 : 1;
+
+      return sortOrder * a[sortField].localeCompare(b[sortField]);
+    })
     .slice((pagination.currentPage - 1) * pagination.pageSize, pagination.currentPage * pagination.pageSize);
 
   const fetchCharacters = async () => {
@@ -146,7 +153,8 @@ const Datatable = () => {
   }, []);
 
   return (
-    <div style={{ height: 800, alignSelf: "center" }}>
+    // increase or decrease the height to test the scrollbar's and the MoveTopButton's functionality
+    <div style={{ height: 600, alignSelf: "center" }}>
       {/* search input for character names */}
       <input
         ref={characterSearchRef}
@@ -170,6 +178,8 @@ const Datatable = () => {
         pagination
         paginationMode="server"
         onPaginationModelChange={paginationChange}
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
         onRowClick={handleRowSelection}
         sx={styles.dataGrid}
         rowSelectionModel={selectedRowId ? [selectedRowId] : []}

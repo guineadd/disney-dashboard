@@ -1,4 +1,3 @@
-import React from "react";
 import { IconButton } from "@mui/material";
 import { ArrowCircleUp } from "@mui/icons-material";
 import styles from "./MoveTopButton.js";

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import theme from "../../shared/theme.js";
 
 const styles = {

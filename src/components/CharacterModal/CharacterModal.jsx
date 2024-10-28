@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { Modal, Box, Typography, Button } from "@mui/material";
 import styles from "./CharacterModal.js";
 
